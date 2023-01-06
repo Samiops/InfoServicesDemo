@@ -1,30 +1,21 @@
 pipeline {
-
-  agent any
-
-  options {
-
-    buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')
-
-  }
-
+  agent none
   stages {
-
-    stage('Hello') {
-
-      steps {
-
-        sh '''
-
-          java -version
-          pwd
-
-        '''
-
+    stage('Maven Latest Stage') {
+      agent {
+        docker { image 'maven:latest' }
       }
-
+      steps {
+        sh 'mvn --version'
+      }
     }
-
+    stage('Maven IBM Java Stage') {
+      agent {
+        docker { image 'maven:ibmjava' }
+      }
+      steps {
+        sh 'mvn --version'
+      }
+    }
   }
-
 }
